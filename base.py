@@ -1,7 +1,6 @@
 uuidCount=0
 gates={}
 gateTypes={}
-import logging
 debug = True
 
 
@@ -20,15 +19,18 @@ class Base():
             raise ValueError
         return lambda x : self.set(value, x)
 
-    def set(self, value, inp):
+    def set(self, value, inp, introspect=False):
+        if introspect: #Kind of hacky, but this will make drawing a lot easier
+            return self
+
         if value not in self.options:
             raise ValueError
         self.data[value]=inp
         self.run()
+        return self
 
     def draw(self):
         pass
-
 
 class Nand(Base):
     type="Nand"
@@ -49,6 +51,7 @@ class Nand(Base):
              out=True
           self.output(out)
           self.data = {}
+
 
 def drawCircuit():
     for gate in gates:
